@@ -1,0 +1,25 @@
+# Use an official Python runtime as a parent image
+FROM python:3.11
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the Python scripts into the container at /app
+COPY mail_e.py /app
+COPY sorted.py /app
+
+# Install necessary Python packages
+RUN pip install --no-cache-dir duckdb openai simplegmail
+
+# Install DuckDB
+RUN apt-get update && apt-get install -y duckdb
+
+# Expose any necessary ports
+EXPOSE 80
+
+# Set environment variables
+ENV OPENAI_API_KEY=your_openai_api_key
+
+# Run your email extraction script when the container launches
+CMD ["python", "mail_e.py"]
+CMD ["python", "sorted.py"]
